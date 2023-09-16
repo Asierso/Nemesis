@@ -5,7 +5,10 @@ namespace Nemesis{
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(text);
             Console.ResetColor();
-            return Console.ReadLine();
+            string? line = Console.ReadLine();
+            if(line is null)
+                return string.Empty;
+            return line;
         }
         public static void PrintSuccess(string text){
             Console.ForegroundColor = ConsoleColor.Green;

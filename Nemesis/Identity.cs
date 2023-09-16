@@ -30,7 +30,7 @@ namespace Nemesis
             user.Password = GenerateToken(12, random);
             return user;
         }
-        private static string GenerateAlias(User user,int aliasMinLength,int aliasMaxLength,Random? random = null, string[] pkeBuffer = null)
+        private static string GenerateAlias(User user,int aliasMinLength,int aliasMaxLength,Random? random = null, string[]? pkeBuffer = null)
         {
             if(random is null)
                 random = new Random();
@@ -77,13 +77,16 @@ namespace Nemesis
             bool valid = true;
             try
             {
+                //Avoid 1 warning
+                if(user.Name == null)
+                    user.Name = "";
                 //Alias generator
                     flags[1] = random.Next(0, user.Name.Length - flags[0]);
                     flags[4] = random.Next(0, user.Name.Length - flags[3]);
                 alias = user.Name.Substring(flags[0], flags[1]);
                 if (flags[2] > 0)
                     alias += part(flags[2]);
-                alias += user.Surname.Substring(flags[3], flags[4]);
+                alias += user.Surname?.Substring(flags[3], flags[4]);
                 if (flags[5] > 0)
                     alias += part(flags[2]);
 
