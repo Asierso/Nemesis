@@ -15,6 +15,11 @@ namespace Nemesis{
             Console.WriteLine(text);
             Console.ResetColor();
         }
+        public static void PrintError(string text){
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
         public static void PrintSplash()
         {
             Console.WriteLine(" _______                               .__        ");

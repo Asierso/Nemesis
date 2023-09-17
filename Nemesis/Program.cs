@@ -7,11 +7,17 @@ namespace Nemesis
         public static void Main(string[] args)
         {
             Graphics.PrintSplash();
-            if (args.Length == 0)
-                AliasPlainGenerator();
-            else
-                AliasRegister(args[0]);
-            
+            try
+            {
+                if (args.Length == 0)
+                    AliasPlainGenerator();
+                else
+                    AliasRegister(args[0]);
+            }
+            catch (Exception ex)
+            {
+                Graphics.PrintError($"Error at execution: {ex.Message}");
+            }
             Graphics.PrintSuccess("All done!");
             Console.ReadLine();
         }
@@ -66,13 +72,13 @@ namespace Nemesis
                 Console.WriteLine($"-Alias: {users[i].Alias}\n-Name: {users[i].Name}\n-Surname: {users[i].Surname}\n-Birth: {users[i].Birth}\n-Email: {users[i].Email}\n-Password: {users[i].Password}");
                 if (Graphics.PrintQuestion("User is valid? (Y/N): ").ToLower() != "y")
                     continue;
-                
+
                 if (Graphics.PrintQuestion("Continue with same alias? (Y/N): ").ToLower() != "y")
                     users[i].Alias = Graphics.PrintQuestion("Please enter the new alias: ");
-                
+
                 if (Graphics.PrintQuestion("Continue with same email? (Y/N): ").ToLower() != "y")
                     users[i].Email = Graphics.PrintQuestion("Please enter the new email: ");
-                
+
                 db.GetCollection<Models.User>(collection).InsertOne(users[i]);
                 Graphics.PrintSuccess("Registered successfully");
             }
