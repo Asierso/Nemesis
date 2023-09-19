@@ -12,6 +12,7 @@ namespace Nemesis
         private static string nameListFile = "names.txt";
         private static string surnameListFile = "surnames.txt";
         private static string partKeysExpresionsListFile = "expkeys.txt";
+        private static string phrasalListFile = "phrasal.txt";
         public static User GeneratePlainIdentity(int aliasMinLength = 5, int aliasMaxLength = 11)
         {
             var namelist = File.ReadAllText($"shuffle/{nameListFile}").Split('\n');
@@ -28,6 +29,7 @@ namespace Nemesis
 
             user.Alias = GenerateAlias(user,aliasMinLength,aliasMaxLength,random);
             user.Password = GenerateToken(12, random);
+            user.Biography = GenerateBiography(random.Next(1,3), random);
             return user;
         }
         private static string GenerateAlias(User user,int aliasMinLength,int aliasMaxLength,Random? random = null, string[]? pkeBuffer = null)
@@ -130,6 +132,8 @@ namespace Nemesis
                         alias += "o";
                     else if (bufferAlias[i].ToString() == "Ú")
                         alias += "u";
+                    else if(bufferAlias[i] == '\n' || bufferAlias[i] == '\r')
+                        alias += "";
                     else
                         alias += bufferAlias[i];
                 }
@@ -140,7 +144,7 @@ namespace Nemesis
             }
             if(valid is false)
                 alias = GenerateAlias(user, aliasMinLength, aliasMaxLength,random, partKeysExpresions);
-
+        
             return alias;
         }
         private static string GenerateToken(int length,Random? random = null)
@@ -155,6 +159,18 @@ namespace Nemesis
                 token += key[random.Next(0, key.Length)];
             }
             return token;
+        }
+        private static string GenerateBiography(int phrasalLength,Random? random = null){
+            if (random is null)
+                random = new Random();
+
+            string[] phrasal = File.ReadAllText($"shuffle/{phrasalListFile}").Split('\n');
+            string text = string.Empty;
+
+            for(int i = 0;i<phrasalLength;i++)
+                text += phrasal[random.Next(0, phrasal.Length)].Trim(new char[] {'\n','\r'}) + " ";
+
+            return text;
         }
     }
 }

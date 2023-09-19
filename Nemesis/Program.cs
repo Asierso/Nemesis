@@ -29,11 +29,12 @@ namespace Nemesis
             if (File.Exists(fname))
                 File.Delete(fname);
             var wrt = new StreamWriter(fname);
+            var trim = new char[] {'\r','\n'};
             for (int i = 0; i < amount; i++)
             {
                 var user = Identity.GeneratePlainIdentity(7, 15);
                 user.Email = $"{user.Alias}@outlook.com";
-                wrt.WriteLine($"{user.Alias};{user.Name};{user.Surname};{user.Birth};{user.Email};{user.Password}");
+                wrt.WriteLine($"{user.Alias?.Trim(trim)};{user.Name?.Trim(trim)};{user.Surname?.Trim(trim)};{user.Birth?.Trim(trim)};{user.Email.Trim(trim)};{user.Password?.Trim(trim)};{user.Biography?.Trim(trim)}");
             }
             wrt.Close();
         }
@@ -54,7 +55,8 @@ namespace Nemesis
                         Surname = lineObj[2],
                         Birth = lineObj[3],
                         Email = lineObj[4],
-                        Password = lineObj[5]
+                        Password = lineObj[5],
+                        Biography = lineObj[6]
                     });
             }
             Console.WriteLine($"Total readed: {users.Count} lines");
@@ -69,7 +71,7 @@ namespace Nemesis
             for (int i = start; i < users.Count; i++)
             {
                 Console.WriteLine($"Register new user (NO: {i}) with these credentials:");
-                Console.WriteLine($"-Alias: {users[i].Alias}\n-Name: {users[i].Name}\n-Surname: {users[i].Surname}\n-Birth: {users[i].Birth}\n-Email: {users[i].Email}\n-Password: {users[i].Password}");
+                Console.WriteLine($"-Alias: {users[i].Alias}\n-Name: {users[i].Name}\n-Surname: {users[i].Surname}\n-Birth: {users[i].Birth}\n-Email: {users[i].Email}\n-Password: {users[i].Password}\n-Biography: {users[i].Biography}");
                 if (Graphics.PrintQuestion("User is valid? (Y/N): ").ToLower() != "y")
                     continue;
 
