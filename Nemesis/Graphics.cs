@@ -1,4 +1,3 @@
-using System;
 namespace Nemesis{
     public class Graphics{
         public static string PrintQuestion(string text){
